@@ -1,8 +1,11 @@
 { path ? <nixpkgs>, gitRef, nixSha256 }:
 
-with import path {}; {
-  erldns = stdenv.mkDerivation {
-    name = "erldns";
+with import path {}; rec {
+  basename = "erldns";
+  version = "0.1.0";
+
+  release = stdenv.mkDerivation {
+    name = "${basename}-${version}";
     src = fetchgit {
       url = ./.;
       rev = "${gitRef}";
@@ -19,19 +22,24 @@ with import path {}; {
     '';
 
     installPhase = ''
+      set -x
       mkdir $out
-      tar -zx -C $out -f _build/nix/rel/$name/$name-*.tar.gz
+      tar -zx -C $out -f _build/nix/rel/${basename}/${basename}-*.tar.gz
+      set +x
     '';
     
     # When used as `nix-shell --pure`
     shellHook = ''
-      unset http_proxy
       export SSL_CERT_FILE=${cacert}/etc/ca-bundle.crt
     '';
-    # used when building environments
-    extraCmds = ''
-      unset http_proxy # otherwise downloads will fail ("nodtd.invalid")
-      export SSL_CERT_FILE=${cacert}/etc/ca-bundle.crt
+  };
+
+  tgz = stdenv.mkDerivation {
+    name = "${basename}-${version}.tar.gz";
+    src = release;
+
+    installPhase = ''
+      tar -zc -C $src -f $out .
     '';
   };
 }
