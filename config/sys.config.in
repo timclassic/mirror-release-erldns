@@ -23,7 +23,7 @@
 
    {use_root_hints, false},
    {catch_exceptions, false},
-   {zones, "priv/example.zone.json"},
+   {zones, "{{zones_file}}"},
    {metrics, [ {port, 8082} ]},
    {admin,
     [ {port, 8083},
@@ -37,15 +37,15 @@
 
  %% Mnesia config
  {mnesia,
-  [ {dir, "db"} ]},
+  [ {dir, "{{mnesia_dir}}"} ]},
 
  %% SASL config
  {sasl,
   [ {sasl_error_logger, false},
     {utc_log, true},
-    {error_logger_mf_dir, "log/sasl"},      % Log directory
-    {error_logger_mf_maxbytes, 10485760},   % 10 MB max file size
-    {error_logger_mf_maxfiles, 5}           % 5 files max
+    {error_logger_mf_dir, "{{sasl_log_mf_dir}}"},  % Log directory
+    {error_logger_mf_maxbytes, 10485760},          % 10 MB max file size
+    {error_logger_mf_maxfiles, 5}                  % 5 files max
   ]},
 
  %% Lager config
@@ -53,7 +53,7 @@
   [ {error_logger_whitelist, [log_mf_h]},
     {handlers,
      [ {lager_file_backend,
-        [ {file, "log/info.log"},
+        [ {file, "{{lager_log_dir}}/info.log"},
           {level, info},
           {size, 104857600},
           {count, 5}

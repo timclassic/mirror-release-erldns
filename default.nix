@@ -31,7 +31,6 @@ with import path {}; rec {
     installPhase = ''
       libdir="lib/${basename}"
       fulldir="$out/$libdir"
-      set -x
       mkdir -p "$fulldir"
       tar -zx -C "$fulldir" \
         -f _build/nix/rel/${basename}/${basename}-${version}.tar.gz
@@ -39,7 +38,6 @@ with import path {}; rec {
       for link in ${basename} ${basename}-${version}; do
         ln -s "../$libdir/bin/$link" "$out/bin/$link"
       done
-      set +x
     '';
 
     postFixup = ''
