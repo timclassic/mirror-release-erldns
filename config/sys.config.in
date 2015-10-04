@@ -13,10 +13,10 @@
       {port, undefined}     %% for future db types
     ]},
    {servers,
-    [ [ {name, inet6_localhost_1},
-        {address, "::"},
-        {port, 8053},
-        {family, inet6},
+    [ [ {name, inet_localhost_1},
+        {address, "{{bind_address}}"},
+        {port, {{bind_port}}},
+        {family, inet},
         {processes, 2}
       ]
     ]},

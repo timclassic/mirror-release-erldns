@@ -16,15 +16,19 @@ RUN mkdir -p /var/erldns/config \
         $(find \
             $(bash nixgit.sh nix-build . -A erldns 2>/dev/null) \
             -name example.zone.json) \
-        /var/erldns/config/zones.json
+        /var/erldns/config/zones.json \
+    && install -m 0755 /src/entrypoint.sh /var/erldns/entrypoint.sh
 
 # Clean up after build
 WORKDIR /
 RUN rm -rf /src
 
-ENTRYPOINT ["erldns"]
+# Runtime environment
+ENV RUNNER_LOG_DIR=/var/erldns/log \
+    BIND_ADDRESS=0.0.0.0 \
+    BIND_PORT=8053
+ENTRYPOINT ["/var/erldns/entrypoint.sh"]
 CMD ["console"]
-ENV RUNNER_LOG_DIR=/var/erldns/log
 
 # Add erldns user and change ownership of directories where erldns
 # user needs write access
