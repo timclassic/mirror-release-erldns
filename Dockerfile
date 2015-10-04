@@ -13,7 +13,9 @@ RUN mkdir -p /var/erldns/config \
              /var/erldns/log \
              /var/erldns/sasl \
     && install -m 0644 \
-        _build/default/lib/erldns/priv/example.zone.json \
+        $(find \
+            $(bash nixgit.sh nix-build . -A erldns 2>/dev/null) \
+            -name example.zone.json) \
         /var/erldns/config/zones.json
 
 # Clean up after build
