@@ -40,7 +40,7 @@ RUN chown erldns:erldns \
 USER erldns
 WORKDIR /var/erldns
 
-EXPOSE 4369 8053 8082
+EXPOSE 4369 8082 $BIND_PORT
 VOLUME /var/erldns/config \
        /var/erldns/mnesia \
        /var/erldns/log \
