@@ -13,11 +13,10 @@
       {port, undefined}     %% for future db types
     ]},
    {servers,
-    [ [ {name, inet_localhost_1},
+    [ [ {name, inet_1},
         {address, "{{bind_address}}"},
         {port, {{bind_port}}},
-        {family, inet},
-        {processes, 2}
+        {family, inet}
       ]
     ]},
 
@@ -51,6 +50,7 @@
  %% Lager config
  {lager,
   [ {error_logger_whitelist, [log_mf_h]},
+    {crash_log, "{{lager_log_dir}}/crash.log"},
     {handlers,
      [ {lager_file_backend,
         [ {file, "{{lager_log_dir}}/info.log"},
