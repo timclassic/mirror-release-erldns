@@ -3,8 +3,10 @@ FROM stoo/nixbase:stoo-0.1-1
 # Build and install
 WORKDIR /src
 COPY . /src/
-RUN bash nixgit.sh nix-env -f . -iA \
-    erldns \
+RUN nix-env -f '<nixpkgs>' -iA \
+        privbind \
+    && bash nixgit.sh nix-env -f . -iA \
+        erldns \
     && nix-collect-garbage -d
 
 # Create directories and include example configuration
@@ -37,7 +39,6 @@ RUN chown erldns:erldns \
         /var/erldns/mnesia \
         /var/erldns/log \
         /var/erldns/sasl
-USER erldns
 WORKDIR /var/erldns
 
 EXPOSE 4369 8082 $BIND_PORT
