@@ -28,7 +28,7 @@ RUN rm -rf /src
 # Runtime environment
 ENV RUNNER_LOG_DIR=/var/erldns/log \
     BIND_ADDRESS=0.0.0.0 \
-    BIND_PORT=8053
+    BIND_PORT=53
 ENTRYPOINT ["/var/erldns/entrypoint.sh"]
 CMD ["console"]
 
@@ -41,7 +41,7 @@ RUN chown erldns:erldns \
         /var/erldns/sasl
 WORKDIR /var/erldns
 
-EXPOSE 4369 8082 $BIND_PORT
+EXPOSE 53 4369 8082 8083
 VOLUME /var/erldns/config \
        /var/erldns/mnesia \
        /var/erldns/log \
