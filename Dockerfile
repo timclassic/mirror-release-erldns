@@ -5,6 +5,7 @@ WORKDIR /src
 COPY . /src/
 RUN nix-env -f '<nixpkgs>' -iA \
         privbind \
+        curl \
     && bash nixgit.sh nix-env -f . -iA \
         erldns \
     && nix-collect-garbage -d
